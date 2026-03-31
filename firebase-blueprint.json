@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "photoURL": { "type": "string", "description": "User profile photo" },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "User role" },
+        "lastActive": { "type": "number", "description": "Last active timestamp" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Chat": {
+      "title": "AI Conversation",
+      "description": "AI chat history for a user.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner of the chat" },
+        "title": { "type": "string", "description": "Chat title" },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string", "enum": ["user", "model"] },
+              "content": { "type": "string" },
+              "timestamp": { "type": "number" }
+            }
+          }
+        },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "messages"]
+    },
+    "ExpandedTeaching": {
+      "title": "Expanded Teaching",
+      "description": "Additional teachings added to the book (Leon Yakobov tag).",
+      "type": "object",
+      "properties": {
+        "chapterTitle": { "type": "string", "description": "The Middah (Attribute) title" },
+        "content": { "type": "string", "description": "The teaching text" },
+        "author": { "type": "string", "description": "Author name (e.g., Leon Yakobov)" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["chapterTitle", "content", "author"]
+    },
+    "Discussion": {
+      "title": "Round Table Discussion",
+      "description": "Real-time messages in a discussion room.",
+      "type": "object",
+      "properties": {
+        "roomId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["roomId", "userId", "message"]
+    },
+    "Log": {
+      "title": "Admin Log",
+      "description": "Logs of user actions for admin review.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["userId", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "AI chat histories"
+    },
+    "/expanded_teachings/{teachingId}": {
+      "schema": "ExpandedTeaching",
+      "description": "Custom additions to the book"
+    },
+    "/discussions/{discussionId}": {
+      "schema": "Discussion",
+      "description": "Real-time discussion messages"
+    },
+    "/logs/{logId}": {
+      "schema": "Log",
+      "description": "Admin activity logs"
+    }
+  }
+}

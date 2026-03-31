@@ -1,0 +1,5 @@
+{
+  "name": "ספר המידות",
+  "description": "An interactive study application for Rebbe Nachman's Sefer HaMiddot (The Book of Attributes), featuring search, bookmarks, and a clean reading interface.",
+  "requestFramePermissions": []
+}
