@@ -10,6 +10,7 @@ import ChatView from './components/ChatView';
 import AdminView from './components/AdminView';
 import RoundTableView from './components/RoundTableView';
 import ChangelogModal from './components/ChangelogModal';
+import AboutModal from './components/AboutModal';
 import { parseText } from './services/textParser';
 import { BookData, Chapter, ViewMode, Highlight, UserProfile, ExpandedTeaching } from './types';
 import { auth, db, signInWithGoogle, logout, handleFirestoreError, OperationType } from './firebase';
@@ -27,11 +28,13 @@ const App: React.FC = () => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [expandedTeachings, setExpandedTeachings] = useState<ExpandedTeaching[]>([]);
 
-  // Expose changelog toggle to window for Sidebar access
+  // Expose changelog and about toggle to window for Sidebar access
   useEffect(() => {
     (window as any).openChangelog = () => setIsChangelogOpen(true);
+    (window as any).openAbout = () => setIsAboutOpen(true);
   }, []);
 
   useEffect(() => {
@@ -289,6 +292,10 @@ const App: React.FC = () => {
                     <button onClick={() => setViewMode(ViewMode.ADMIN)} className={`p-2 rounded-full transition-colors ${viewMode === ViewMode.ADMIN ? 'text-gold-dark bg-gold/10' : 'text-gray-500 hover:bg-black/5'}`} title="ניהול מערכת"><Shield size={20} /></button>
                   )}
 
+                  <button onClick={() => setIsAboutOpen(true)} className="p-2 rounded-full transition-colors text-gray-500 hover:bg-black/5 hover:text-gold-dark" title="אודות המערכת">
+                    <span className="font-bold text-sm px-1">אודות</span>
+                  </button>
+
                   <div className="h-6 w-px bg-gold/30 mx-1" />
 
                   {user ? (
@@ -311,6 +318,7 @@ const App: React.FC = () => {
       )}
 
       <ChangelogModal isOpen={isChangelogOpen} onClose={() => setIsChangelogOpen(false)} />
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };

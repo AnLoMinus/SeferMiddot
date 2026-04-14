@@ -36,12 +36,20 @@ const Sidebar: React.FC<SidebarProps> = ({ chapters, currentChapter, onSelectCha
               </button>
             </div>
             <div className="flex flex-col gap-1">
-              <button 
-                onClick={() => (window as any).openChangelog()}
-                className="text-[10px] font-mono text-gold-dark bg-gold/10 px-2 py-0.5 rounded-full w-fit hover:bg-gold/20 transition-colors border border-gold/20"
-              >
-                v0.0.1
-              </button>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => (window as any).openChangelog()}
+                  className="text-[10px] font-mono text-gold-dark bg-gold/10 px-2 py-0.5 rounded-full w-fit hover:bg-gold/20 transition-colors border border-gold/20"
+                >
+                  v0.1.0
+                </button>
+                <button 
+                  onClick={() => (window as any).openAbout()}
+                  className="text-[10px] font-sans text-ink bg-black/5 px-2 py-0.5 rounded-full w-fit hover:bg-black/10 transition-colors border border-black/10"
+                >
+                  אודות
+                </button>
+              </div>
               <div className="flex items-center">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gold/20 text-gold-dark border border-gold/30">
                   סה״כ {chapters.filter(c => !c.isIntroduction).length} מידות • {chapters.reduce((acc, c) => acc + c.part1.length + c.part2.length, 0)} אמרות
