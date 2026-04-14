@@ -67,25 +67,31 @@ export const parseText = async (): Promise<BookData> => {
       const part1: Teaching[] = [];
       const part2: Teaching[] = [];
       let currentPart = part1;
+      let currentTeaching: Teaching | null = null;
       
       for (const line of lines) {
         if (line.includes('חֵלֶק ב')) {
           currentPart = part2;
+          currentTeaching = null;
           continue;
         }
         const titleMatch = line.match(/### ✨ \*\*פֶּרֶק:\s*(.*?)\s*\*\* ✨/);
         if (titleMatch) {
           title = titleMatch[1].trim();
+          currentTeaching = null;
         } else {
           // Match both **א.** and **א. ...
           const teachingMatch = line.match(/^\*\*([א-ת]{1,3})\.\*?\*?\s*(.*)/);
           if (teachingMatch) {
-            currentPart.push({
+            currentTeaching = {
               id: `new-${title}-${currentPart === part1 ? 'part1' : 'part2'}-${currentPart.length}`,
               letter: teachingMatch[1],
               content: teachingMatch[2],
               author: 'לאון יעקובוב'
-            });
+            };
+            currentPart.push(currentTeaching);
+          } else if (currentTeaching && line.trim() !== '' && !line.startsWith('---') && !line.startsWith('###')) {
+            currentTeaching.content += '\n' + line;
           }
         }
       }
@@ -144,6 +150,15 @@ export const parseText = async (): Promise<BookData> => {
     const newAnavaIndex = cachedData.chapters.findIndex(c => c.title === 'ענוה');
     console.log('New Anava index:', newAnavaIndex);
     cachedData.chapters.splice(newAnavaIndex, 0, osherWealthChapter);
+  }
+  
+  const chesedIndex = cachedData.chapters.findIndex(c => c.title.includes('חסד') || c.title.includes('חֶסֶד'));
+  const chanafaIndex = cachedData.chapters.findIndex(c => c.title === 'חנפה');
+  
+  if (chesedIndex !== -1 && chanafaIndex !== -1) {
+    const chesedChapter = cachedData.chapters.splice(chesedIndex, 1)[0];
+    const newChanafaIndex = cachedData.chapters.findIndex(c => c.title === 'חנפה');
+    cachedData.chapters.splice(newChanafaIndex + 1, 0, chesedChapter);
   }
   
   console.log('Chapters after reordering:', cachedData.chapters.map(c => c.title));
