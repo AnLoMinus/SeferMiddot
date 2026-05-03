@@ -33,7 +33,8 @@ export enum ViewMode {
   RANDOM = 'RANDOM',
   CHAT = 'CHAT',
   ADMIN = 'ADMIN',
-  ROUND_TABLE = 'ROUND_TABLE'
+  ROUND_TABLE = 'ROUND_TABLE',
+  GENERATOR = 'GENERATOR'
 }
 
 export interface UserProfile {

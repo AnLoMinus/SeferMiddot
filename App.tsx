@@ -11,6 +11,7 @@ import AdminView from './components/AdminView';
 import RoundTableView from './components/RoundTableView';
 import ChangelogModal from './components/ChangelogModal';
 import AboutModal from './components/AboutModal';
+import MidaGenerator from './components/MidaGenerator';
 import { parseText } from './services/textParser';
 import { BookData, Chapter, ViewMode, Highlight, UserProfile, ExpandedTeaching } from './types';
 import { auth, db, signInWithGoogle, logout, handleFirestoreError, OperationType } from './firebase';
@@ -219,6 +220,8 @@ const App: React.FC = () => {
           return <ChatView data={enrichedData} />;
       case ViewMode.ADMIN:
           return <AdminView />;
+      case ViewMode.GENERATOR:
+          return <MidaGenerator />;
       case ViewMode.ROUND_TABLE:
           return <RoundTableView />;
       case ViewMode.READING:
@@ -289,7 +292,10 @@ const App: React.FC = () => {
                   )}
 
                   {userProfile?.role === 'admin' && (
-                    <button onClick={() => setViewMode(ViewMode.ADMIN)} className={`p-2 rounded-full transition-colors ${viewMode === ViewMode.ADMIN ? 'text-gold-dark bg-gold/10' : 'text-gray-500 hover:bg-black/5'}`} title="ניהול מערכת"><Shield size={20} /></button>
+                    <>
+                      <button onClick={() => setViewMode(ViewMode.ADMIN)} className={`p-2 rounded-full transition-colors ${viewMode === ViewMode.ADMIN ? 'text-gold-dark bg-gold/10' : 'text-gray-500 hover:bg-black/5'}`} title="ניהול מערכת"><Shield size={20} /></button>
+                      <button onClick={() => setViewMode(ViewMode.GENERATOR)} className={`p-2 rounded-full transition-colors ${viewMode === ViewMode.GENERATOR ? 'text-gold-dark bg-gold/10' : 'text-gray-500 hover:bg-black/5'}`} title="מחולל מידות"><Bot size={20} /></button>
+                    </>
                   )}
 
                   <button onClick={() => setIsAboutOpen(true)} className="p-2 rounded-full transition-colors text-gray-500 hover:bg-black/5 hover:text-gold-dark" title="אודות המערכת">
